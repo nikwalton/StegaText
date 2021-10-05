@@ -1,3 +1,4 @@
+'''GUI Imports'''
 import sys
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -13,12 +14,14 @@ class Window(QMainWindow):
         self.setGeometry(10,10,800,600)
 
         self._createEditor()
-        self._createMenu()
+        
 
     def _createEditor(self):
         editor = QTextEdit()
         self.setCentralWidget(editor)
-        
+        editor.setText("Testing StegaText")
+
+
 def main():
     app = QApplication(sys.argv)
     ex = Window()
