@@ -79,5 +79,26 @@ def encode(image_file):
     new_image_name = "EncodedImage.png"
     new_image.save(new_image_name, str(new_image_name.split(".")[1].upper()))
 
+def decode(image_file):
+    image = Image.open(image_file, 'r')
 
-encode("WSU.png")
+    data = ''
+    image_data = iter(image.getdata())
+
+    while (True):
+        pixels = [value for value in image_data.__next__()[:3] +
+                                     image_data.__next__()[:3] +
+                                     image_data.__next__()[:3]]
+        
+        binary_string = ''
+
+        for i in pixels[:8]:
+            if (i % 2 == 0):
+                binary_string += '0'
+            else:
+                binary_string += '1'
+
+        data += chr(int(binary_string, 2))
+        if (pixels[-1] % 2 != 0):
+            return data
+      
