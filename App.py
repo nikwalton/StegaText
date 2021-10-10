@@ -25,7 +25,6 @@ class Window(QMainWindow):
         menu = self.menuBar()
         menu.setNativeMenuBar(False)
         self.setCentralWidget(self.editor)
-        self.editor.setText(decode('EncodedImage.png')) 
 
         #Set up connection for encoding images 
         encodeImageAction = QAction('&Encode Image', self)
@@ -73,7 +72,9 @@ class Window(QMainWindow):
         encode(url.fileName(), self.editor.toPlainText()) 
 
     def decodeImage(self):
-        print('Decode Image')
+        file, _ = QFileDialog.getOpenFileName(self, "Select Encoded Image File")
+        url = QUrl.fromLocalFile(file)
+        self.editor.setText(decode(url.fileName()))
 
     def encodeAudio(self):
         print('Encode Audio')
