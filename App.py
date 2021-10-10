@@ -5,6 +5,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 
+from Steg import decode, encode
+
+
 class Window(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -18,8 +21,20 @@ class Window(QMainWindow):
 
     def _createEditor(self):
         editor = QTextEdit()
+        menu = self.menuBar()
+        menu.setNativeMenuBar(False)
+        fileMenu = menu.addMenu('File')
+        fileMenu.addAction('Encode Image File')
+        fileMenu.addAction('Decode Image File')
+        fileMenu.addSeparator()
+        fileMenu.addAction('Encode Audio File')
+        fileMenu.addAction('Decode Audio File')
+
+        encryptMenu = menu.addMenu('Encryption')
+        encryptMenu.addAction('Encrypt')
+        encryptMenu.addAction('Decrypt')
         self.setCentralWidget(editor)
-        editor.setText("Testing StegaText")
+        editor.setText(decode('EncodedImage.png'))
 
 
 def main():
