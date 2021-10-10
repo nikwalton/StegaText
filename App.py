@@ -1,5 +1,6 @@
 '''GUI Imports'''
 import sys
+from PyQt5.QtCore import QFile, QUrl
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -20,9 +21,11 @@ class Window(QMainWindow):
         
 
     def _createEditor(self):
-        editor = QTextEdit()
+        self.editor = QTextEdit()
         menu = self.menuBar()
         menu.setNativeMenuBar(False)
+        self.setCentralWidget(self.editor)
+        self.editor.setText(decode('EncodedImage.png')) 
 
         #Set up connection for encoding images 
         encodeImageAction = QAction('&Encode Image', self)
@@ -60,12 +63,15 @@ class Window(QMainWindow):
         encryptMenu.addAction(encryptAction)
         encryptMenu.addAction(decryptAction)
 
-        self.setCentralWidget(editor)
-        editor.setText(decode('EncodedImage.png'))
+ 
 
     def encodeImage(self):
-        print("Encode Image")
-    
+        file, _ = QFileDialog.getOpenFileName(self, "Select Image File")
+        print(file)
+        url = QUrl.fromLocalFile(file)
+
+        encode(url.fileName(), self.editor.toPlainText()) 
+
     def decodeImage(self):
         print('Decode Image')
 

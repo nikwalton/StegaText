@@ -67,10 +67,10 @@ def encode_helper(new_image, data):
         else:
             x += 1
 
-def encode(image_file):
+def encode(image_file, text):
     image = Image.open(image_file, 'r')
 
-    data = ("testing Encoding")
+    data = (text)
     if (len(data) == 0):
         raise ValueError('No Data Present')
 
