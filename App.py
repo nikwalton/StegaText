@@ -87,17 +87,24 @@ class Window(QMainWindow):
     def encryptHelper(self):
         print('encrypt text')
 
+        # if theres nothing to encrypt dont bother
         if self.editor.toPlainText() != '':
+            # generate new key using the cryptography package
             key = Fernet.generate_key()
             print(key)
             print(type(key))
-
+            # instanciate the fernet class
             fernet = Fernet(key)
+            # get text form the text box
             text = self.editor.toPlainText()
             
+            # perform the encryption
             encryptedText = fernet.encrypt(text.encode())
+            #output the results
+            self.editor.clear()
             self.editor.setText(encryptedText.decode('utf-8'))
         
+            # give the user their key
             message = QMessageBox()
             message.setText("This is your key for decryption please save this in a safe place.")
             message.setInformativeText(key.decode('utf-8'))
@@ -114,8 +121,27 @@ class Window(QMainWindow):
 
     def decryptHelper(self):
         print('decrypt text')
-        key = QInputDialog.getText(self, 'Decrypt Text', 'Enter your key below')
-        print(key[0])
+
+        if self.editor.toPlainText() != '':
+            key = QInputDialog.getText(self, 'Decrypt Text', 'Enter your key below')
+        
+            bytesKey = bytes(key[0], 'utf-8')
+
+            fernet = Fernet(bytesKey)
+
+            encryptedText = self.editor.toPlainText()
+            bytesText = bytes(encryptedText, 'utf-8')
+            decodeText = fernet.decrypt(bytesText).decode()
+
+            self.editor.clear()
+            self.editor.setText(decodeText)
+        else:
+            message = QMessageBox()
+            message.setText("No text do decrypt")
+            message.setWindowTitle("Decryption Error")
+            message.exec_()
+
+
 
 
 def main():
