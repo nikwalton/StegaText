@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import *
 '''Other Scripts Imports'''
 from Steg import decode, encode
 
+'''Cryptography'''
+from cryptography.fernet import Fernet
 
 class Window(QMainWindow):
     def __init__(self, parent=None):
@@ -85,8 +87,37 @@ class Window(QMainWindow):
     def encryptHelper(self):
         print('encrypt text')
 
+        if self.editor.toPlainText() != '':
+            key = Fernet.generate_key()
+            print(key)
+            print(type(key))
+
+            fernet = Fernet(key)
+            text = self.editor.toPlainText()
+            
+            encryptedText = fernet.encrypt(text.encode())
+            self.editor.setText(encryptedText.decode('utf-8'))
+        
+            message = QMessageBox()
+            message.setText("This is your key for decryption please save this in a safe place.")
+            message.setInformativeText(key.decode('utf-8'))
+            message.setWindowTitle("Encrypt")
+
+            message.exec_()
+        else:
+            message = QMessageBox()
+            message.setText("No text to encrypt")
+            message.setWindowTitle("Encryption Error")
+            message.exec_()
+
+        
+
     def decryptHelper(self):
         print('decrypt text')
+        key = QInputDialog.getText(self, 'Decrypt Text', 'Enter your key below')
+        print(key[0])
+
+
 def main():
     app = QApplication(sys.argv)
     ex = Window()
