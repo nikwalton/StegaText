@@ -143,7 +143,7 @@ class Window(QMainWindow):
             self.editor.setText(decodeText)
         else:
             message = QMessageBox()
-            message.setText("No text do decrypt")
+            message.setText("No text to decrypt")
             message.setWindowTitle("Decryption Error")
             message.exec_()
 
