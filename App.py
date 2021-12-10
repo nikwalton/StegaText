@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 
 '''Other Scripts Imports'''
 from Steg import decode, encode
+from AudioSteg import audio_decode, audio_encode
 
 '''Cryptography'''
 from cryptography.fernet import Fernet
@@ -79,10 +80,15 @@ class Window(QMainWindow):
         self.editor.setText(decode(url.fileName()))
 
     def encodeAudio(self):
-        print('Encode Audio')
+        file, _ = QFileDialog.getOpenFileName(self, "Select Audio File")
+        url = QUrl.fromLocalFile(file)
+        audio_encode(url.fileName(), self.editor.toPlainText())
+        print("done")
     
     def decodeAudio(self):
-        print('Decode Audio')
+        file, _ = QFileDialog.getOpenFileName(self, "Select Encoded Audio File")
+        url = QUrl.fromLocalFile(file)
+        self.editor.setText(audio_decode(url.fileName()))
 
     def encryptHelper(self):
         print('encrypt text')
